@@ -1,11 +1,9 @@
 import { useState, useMemo } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { 
-  ChevronRight, FileSearch, ShieldAlert, Download, Share2, CheckCircle2,
-  XCircle, Search, ChevronLeft as PrevIcon, Shield,
-  Printer, ZoomIn, ZoomOut, RotateCw, Maximize, ChevronRight as NextIcon,
-  LayoutGrid, AlertTriangle, ShieldCheck, History,
-  FileText, RefreshCw, Zap, Info
+  ChevronRight, FileSearch, ShieldAlert, CheckCircle2,
+  Search, ChevronLeft as PrevIcon, ChevronRight as NextIcon,
+  LayoutGrid, AlertTriangle, ShieldCheck, History
 } from "lucide-react";
 
 const metadataPairs = [
@@ -161,7 +159,7 @@ export function MetadataDiffPage() {
                     <stat.icon size={16} className={stat.color} strokeWidth={2.5} />
                     <span className={`text-[15px] font-bold tracking-tight ${stat.color}`}>{stat.label}</span>
                   </div>
-                  <ChevronRight size={14} className="text-[#C7C7CC]" strokeWidth={2.5} />
+                  <NextIcon size={14} className="text-[#C7C7CC]" strokeWidth={2.5} />
                 </div>
                 <div className="flex items-end justify-between">
                   <div className="flex items-baseline gap-1.5">
@@ -234,6 +232,17 @@ export function MetadataDiffPage() {
                   </tbody>
                 </table>
               </div>
+
+              <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                 <div className="flex items-center gap-6">
+                    <span className="text-[#FA114F]">{metadataPairs.filter(m => m.status === 'Tampered').length} TAMPERED NODES IDENTIFIED</span>
+                 </div>
+                 <div className="flex items-center gap-4">
+                    <button onClick={handlePrev} className="hover:text-gray-900 disabled:opacity-30 font-black" disabled={page === 1}>PREV</button>
+                    <span className="text-gray-900">{page} / {totalPages}</span>
+                    <button onClick={handleNext} className="hover:text-gray-900 disabled:opacity-30 font-black" disabled={page >= totalPages}>NEXT</button>
+                 </div>
+              </div>
             </div>
 
             {/* Right Workstation Pillar ────────────────────────── */}
@@ -251,7 +260,7 @@ export function MetadataDiffPage() {
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#007AFF" strokeWidth="6" strokeDasharray={239} strokeDashoffset={239 * (1 - selected.confidence/100)} strokeLinecap="round" />
                            <circle cx="44" cy="44" r="30" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
-                           <circle cx="44" cy="44" r="30" fill="none" stroke={selected.status === 'Tampered' ? '#FA114F' : '#34C759'} strokeWidth="6" strokeDasharray={188} strokeDashoffset={188 * 0.4} strokeLinecap="round" />
+                           <circle cx="44" cy="44" r="30" stroke={selected.status === 'Tampered' ? '#FA114F' : '#34C759'} strokeWidth="6" strokeDasharray={188} strokeDashoffset={188 * 0.4} strokeLinecap="round" />
                         </svg>
                      </div>
                      <div className="flex-1 space-y-1">

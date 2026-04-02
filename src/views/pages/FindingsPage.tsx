@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import {
-  AlertTriangle, CheckCircle2, XCircle, ChevronRight,
-  BarChart2, TrendingUp, Calendar, Shield, RefreshCw, Search,
-  ChevronLeft as PrevIcon, ChevronRight as NextIcon, Zap, History,
-  ShieldAlert, ShieldCheck
+  AlertTriangle, XCircle, ChevronRight,
+  BarChart2, Calendar, Search,
+  ChevronRight as NextIcon, History,
+  ShieldCheck
 } from "lucide-react";
 
 const findings = [
@@ -19,7 +19,7 @@ const severityConfig = {
   critical: { color: "text-[#FA114F]", dot: "bg-[#FA114F]", label: "Critical", icon: XCircle, ring: "#FA114F" },
   high: { color: "text-orange-500", dot: "bg-orange-500", label: "High", icon: AlertTriangle, ring: "#FF9500" },
   medium: { color: "text-amber-500", dot: "bg-amber-500", label: "Medium", icon: AlertTriangle, ring: "#FFCC00" },
-  low: { color: "text-[#007AFF]", dot: "bg-[#007AFF]", label: "Low", icon: CheckCircle2, ring: "#007AFF" },
+  low: { color: "text-[#007AFF]", dot: "bg-[#007AFF]", label: "Low", icon: ShieldCheck, ring: "#007AFF" },
 };
 
 export function FindingsPage() {
