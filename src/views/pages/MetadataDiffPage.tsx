@@ -293,7 +293,7 @@ export function MetadataDiffPage() {
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#007AFF" strokeWidth="6" strokeDasharray={239} strokeDashoffset={239 * (1 - selected.confidence/100)} strokeLinecap="round" />
                            <circle cx="44" cy="44" r="30" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
-                           <circle cx="44" cy="44" r="30" stroke={selected.status === 'Tampered' ? '#FA114F' : '#34C759'} strokeWidth="6" strokeDasharray={188} strokeDashoffset={188 * 0.4} strokeLinecap="round" />
+                           <circle cx="44" cy="44" r="30" fill="none" stroke={selected.status === 'Tampered' ? '#FA114F' : '#34C759'} strokeWidth="6" strokeDasharray={188} strokeDashoffset={188 * 0.4} strokeLinecap="round" />
                         </svg>
                      </div>
                      <div className="flex-1 space-y-1">
