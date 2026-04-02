@@ -14,8 +14,8 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
-      <Route path="/try-it-now" element={<TryItNowPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/try-it-now" element={<Navigate to="/dashboard/metadata-diff" replace />} />
+      <Route path="/dashboard" element={<Navigate to="/dashboard/metadata-diff" replace />} />
       <Route path="/dashboard/upload-queue" element={<UploadQueuePage />} />
       <Route path="/dashboard/signature-lab" element={<SignatureLabPage />} />
       <Route path="/dashboard/metadata-diff" element={<MetadataDiffPage />} />
