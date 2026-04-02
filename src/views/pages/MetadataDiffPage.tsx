@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { 
-  ChevronRight, FileSearch, ShieldAlert, CheckCircle2,
-  Search, ChevronLeft as PrevIcon, ChevronRight as NextIcon,
-  LayoutGrid, AlertTriangle, ShieldCheck, History
+  ChevronRight, FileSearch, CheckCircle2,
+  Search, ChevronRight as NextIcon,
+  AlertTriangle, ShieldCheck, History
 } from "lucide-react";
 
 const metadataPairs = [
@@ -146,9 +146,9 @@ export function MetadataDiffPage() {
           {/* ─── METRICS CARDS (3 COLUMNS ONLY) ─────────────────── */}
           <section className="grid grid-cols-3 gap-4 pb-8">
             {[
-              { id: "all", label: "Metadata Extraction", value: filteredItems.length, unit: "nodes", color: "text-[#007AFF]", icon: Search },
-              { id: "tampered", label: "Tampered Nodes", value: filteredItems.filter(f => f.status === 'Tampered').length, unit: "alerts", color: "text-[#FA114F]", icon: AlertTriangle },
-              { id: "verified", label: "Audit Confidence", value: "98", unit: "%", color: "text-[#16A34A]", icon: ShieldCheck },
+              { id: "all", label: "Metadata Extraction", value: filteredItems.length, unit: "nodes", color: "text-[#007AFF]", icon: Search, graphic: "pulse-blue", time: "10:05 AM" },
+              { id: "tampered", label: "Tampered Nodes", value: filteredItems.filter(f => f.status === 'Tampered').length, unit: "alerts", color: "text-[#FA114F]", icon: AlertTriangle, graphic: "bars-red", time: "9:41 AM" },
+              { id: "verified", label: "Audit Confidence", value: "98", unit: "%", color: "text-[#16A34A]", icon: ShieldCheck, graphic: "ring-green", time: "Today" },
             ].map((stat) => (
               <button
                 key={stat.id}
@@ -159,12 +159,45 @@ export function MetadataDiffPage() {
                     <stat.icon size={16} className={stat.color} strokeWidth={2.5} />
                     <span className={`text-[15px] font-bold tracking-tight ${stat.color}`}>{stat.label}</span>
                   </div>
-                  <NextIcon size={14} className="text-[#C7C7CC]" strokeWidth={2.5} />
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-medium text-[#8E8E93]">{stat.time}</span>
+                    <NextIcon size={14} className="text-[#C7C7CC]" strokeWidth={2.5} />
+                  </div>
                 </div>
                 <div className="flex items-end justify-between">
                   <div className="flex items-baseline gap-1.5">
                     <h3 className="text-[34px] font-bold tracking-tight text-black leading-none">{stat.value}</h3>
-                    <span className="text-[15px] font-medium text-[#8E8E93] uppercase tracking-widest">{stat.unit}</span>
+                    <span className="text-[15px] font-medium text-[#8E8E93]">{stat.unit}</span>
+                  </div>
+
+                  {/* Graphics */}
+                  <div className="flex items-center justify-center p-1">
+                      {stat.graphic === "ring-green" && (
+                        <div className="relative w-12 h-12">
+                          <svg className="w-full h-full -rotate-90">
+                            <circle cx="24" cy="24" r="18" fill="none" stroke="#E2FBE9" strokeWidth="6" />
+                            <circle cx="24" cy="24" r="18" fill="none" stroke="#34C759" strokeWidth="6" strokeDasharray={113} strokeDashoffset={20} strokeLinecap="round" />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <CheckCircle2 size={12} className="text-[#34C759]" strokeWidth={3} />
+                          </div>
+                        </div>
+                      )}
+                      
+                      {stat.graphic === "bars-red" && (
+                        <div className="flex items-end gap-1 h-8 px-1">
+                          {[0.4, 0.7, 0.5, 0.9, 0.6].map((h, i) => (
+                            <div key={i} className="w-1.5 bg-[#FA114F] rounded-t-full" style={{ height: `${h * 100}%` }} />
+                          ))}
+                        </div>
+                      )}
+
+                      {stat.graphic === "pulse-blue" && (
+                        <div className="w-10 h-10 rounded-full bg-[#007AFF]/10 flex items-center justify-center relative">
+                          <div className="absolute inset-0 rounded-full bg-[#007AFF]/20 animate-ping opacity-75" />
+                          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#007AFF] to-[#58A9FF] shadow-lg shadow-blue-500/30" />
+                        </div>
+                      )}
                   </div>
                 </div>
               </button>
@@ -255,8 +288,8 @@ export function MetadataDiffPage() {
                   </header>
 
                   <div className="flex items-center gap-6 mb-8 p-5 bg-gray-50 rounded-[20px] border border-gray-100">
-                     <div className="relative w-22 h-22 shrink-0">
-                        <svg className="w-full h-full -rotate-90">
+                     <div className="relative w-[88px] h-[88px] shrink-0">
+                        <svg className="w-full h-full -rotate-90" viewBox="0 0 88 88">
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
                            <circle cx="44" cy="44" r="38" fill="none" stroke="#007AFF" strokeWidth="6" strokeDasharray={239} strokeDashoffset={239 * (1 - selected.confidence/100)} strokeLinecap="round" />
                            <circle cx="44" cy="44" r="30" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" />
@@ -282,23 +315,17 @@ export function MetadataDiffPage() {
                   </button>
                </div>
 
-               {/* FORENSIC PROTOCOL (PROPER VISIBLE DARK CARD) ───────── */}
-               <div className="bg-[#121836] rounded-[24px] p-8 border border-white/10 shadow-2xl relative overflow-hidden flex items-start gap-5 group">
-                  <div className="absolute top-0 right-0 p-8 text-[#007AFF]/5 pointer-events-none group-hover:scale-110 transition-transform duration-1000">
-                     <History size={72} strokeWidth={1} />
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#007AFF]/15 flex items-center justify-center text-[#007AFF] shrink-0 border border-[#007AFF]/20 shadow-inner">
-                    <History size={24} strokeWidth={2.5} />
-                  </div>
-                  <div className="relative z-10">
-                     <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-[11px] font-black text-gray-500 uppercase tracking-[0.2em] [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">Forensic Protocol</h3>
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#FA114F]" />
+               {/* FORENSIC PROTOCOL (PROPER STRUDCTURE) ───────── */}
+               <div className="bg-[#121836] rounded-[24px] p-6 border border-white/10 shadow-2xl [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
+                  <header className="flex items-center justify-between mb-4">
+                     <div className="flex items-center gap-2">
+                        <History size={16} className="text-[#007AFF]" strokeWidth={2.5} />
+                        <h2 className="text-[15px] font-bold text-white tracking-tight">Forensic Protocol</h2>
                      </div>
-                     <p className="text-white text-[15px] font-bold leading-tight tracking-tight [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif] pr-4">
-                        XREF mutations indicate invisible content layers. Check Audit Trail.
-                     </p>
-                  </div>
+                  </header>
+                  <p className="text-[#8E8E93] text-[13px] font-medium leading-relaxed">
+                     XREF mutations indicate invisible content layers. Check Audit Trail.
+                  </p>
                </div>
             </div>
           </div>
