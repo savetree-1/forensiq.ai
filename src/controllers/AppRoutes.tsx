@@ -8,6 +8,7 @@ import { MetadataDiffPage } from "@/views/pages/MetadataDiffPage";
 import { FindingsPage } from "@/views/pages/FindingsPage";
 import { AuditTrailPage } from "@/views/pages/AuditTrailPage";
 import { RiskTimelinePage } from "@/views/pages/RiskTimelinePage";
+import { ReportPage } from "@/views/pages/ReportPage";
 
 export const AppRoutes = () => {
   return (
@@ -22,6 +23,7 @@ export const AppRoutes = () => {
       <Route path="/dashboard/risk-timeline" element={<RiskTimelinePage />} />
       <Route path="/dashboard/findings" element={<FindingsPage />} />
       <Route path="/dashboard/audit-trail" element={<AuditTrailPage />} />
+      <Route path="/dashboard/report" element={<ReportPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

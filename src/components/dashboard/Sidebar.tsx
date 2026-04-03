@@ -7,7 +7,7 @@ import {
   TrendingUp,
   AlertTriangle,
   History,
-  FileDown,
+  FileText,
 } from "lucide-react";
 const brandLogo = "/src/assets/branding/image copy 2.png";
 
@@ -19,7 +19,7 @@ const navItems = [
   { icon: TrendingUp, label: "Risk Timeline", path: "/dashboard/risk-timeline" },
   { icon: AlertTriangle, label: "Findings", path: "/dashboard/findings" },
   { icon: History, label: "Audit Trail", path: "/dashboard/audit-trail" },
-  { icon: FileDown, label: "Export Report", path: "/dashboard/export-report" },
+  { icon: FileText, label: "Report", path: "/dashboard/report" },
 ];
 
 export function Sidebar() {
