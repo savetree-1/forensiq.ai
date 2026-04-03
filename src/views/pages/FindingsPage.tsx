@@ -2,10 +2,11 @@ import { useState, useMemo } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import {
   AlertTriangle, XCircle, ChevronRight,
-  BarChart2, Calendar, Search, CheckCircle2,
-  ChevronRight as NextIcon, History,
+  Search, CheckCircle2,
+  ChevronRight as NextIcon,
   ShieldCheck
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const findings = [
   { id: 1, severity: "critical", title: "Font Substitution on Signature Block", page: "Page 3", block: "Block 7", category: "Typography", timestamp: "09:15 AM", description: "The font used for the issuing officer's name is Arial substituted over Helvetica Neue. This is a known digital manipulation technique used to alter names or figures.", recommendation: "Cross-reference with original embed metadata.", riskScore: 94 },
@@ -16,14 +17,13 @@ const findings = [
 ];
 
 const severityConfig = {
-  critical: { color: "text-[#FA114F]", dot: "bg-[#FA114F]", label: "Critical", icon: XCircle, ring: "#FA114F" },
-  high: { color: "text-orange-500", dot: "bg-orange-500", label: "High", icon: AlertTriangle, ring: "#FF9500" },
-  medium: { color: "text-amber-500", dot: "bg-amber-500", label: "Medium", icon: AlertTriangle, ring: "#FFCC00" },
-  low: { color: "text-[#007AFF]", dot: "bg-[#007AFF]", label: "Low", icon: ShieldCheck, ring: "#007AFF" },
+  critical: { color: "text-[#FA114F]", border: "border-l-[#FA114F]", bg: "bg-[#FA114F]/10", hoverBg: "hover:bg-[#FA114F]/15", label: "Critical", icon: XCircle, ring: "#FA114F" },
+  high: { color: "text-[#FF9500]", border: "border-l-[#FF9500]", bg: "bg-[#FF9500]/10", hoverBg: "hover:bg-[#FF9500]/15", label: "High", icon: AlertTriangle, ring: "#FF9500" },
+  medium: { color: "text-[#FFCC00]", border: "border-l-[#FFCC00]", bg: "bg-[#FFCC00]/10", hoverBg: "hover:bg-[#FFCC00]/15", label: "Medium", icon: AlertTriangle, ring: "#FFCC00" },
+  low: { color: "text-[#007AFF]", border: "border-l-[#007AFF]", bg: "bg-[#007AFF]/10", hoverBg: "hover:bg-[#007AFF]/15", label: "Low", icon: ShieldCheck, ring: "#007AFF" },
 };
 
 export function FindingsPage() {
-  const [selected, setSelected] = useState(findings[0]);
   const [search, setSearch] = useState("");
 
   const filteredFindings = useMemo(() => {
@@ -38,12 +38,13 @@ export function FindingsPage() {
     <div className="flex h-screen bg-[#0b0f24] font-inter overflow-hidden text-white/90">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto relative">
+      <div className="flex-1 overflow-y-auto relative bg-[#0b0f24]">
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
         
-        <div className="relative z-10 p-8 w-full max-w-[1500px] mx-auto">
+        <div className="relative z-10 p-8 w-full max-w-[1200px] mx-auto pb-24">
+          
           {/* ─── NAVIGATION BAR (STANDARD) ─────────────────────── */}
-          <div className="flex items-center justify-between h-8 mt-1 mb-8">
+          <div className="flex items-center justify-between h-8 mt-1 mb-10 shrink-0">
             <div className="flex items-center gap-1.5 [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
               <span className="text-[13px] text-gray-500 font-medium hover:text-white cursor-pointer transition-colors">Overview</span>
               <ChevronRight size={13} className="text-gray-700" />
@@ -58,7 +59,7 @@ export function FindingsPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search findings..."
-                  className="pl-8 pr-4 py-2 bg-white/5 border border-white/5 rounded-xl text-[11px] text-white font-bold focus:outline-none w-64 transition-all"
+                  className="pl-8 pr-4 py-2 bg-[#121836] border border-white/10 rounded-xl text-[11px] text-white font-bold focus:outline-none focus:border-[#007AFF]/50 w-64 transition-all"
                 />
               </div>
             </div>
@@ -125,116 +126,113 @@ export function FindingsPage() {
             ))}
           </section>
 
-          <div className="grid grid-cols-12 gap-8 items-start">
+          {/* ─── CALENDAR-STYLE FINDINGS AGENDA BLOCK ──────────────────────── */}
+          <div className="w-full bg-[#121836]/40 border border-white/5 rounded-[24px] shadow-2xl overflow-hidden relative pb-10 mt-4">
             
-            {/* Left Workspace: Findings List (WHITE LIST) ─────────── */}
-            <div className="col-span-12 lg:col-span-4 flex flex-col gap-3">
-              {filteredFindings.map(finding => {
-                const sc = severityConfig[finding.severity as keyof typeof severityConfig];
-                const Icon = sc.icon;
-                return (
-                  <button
-                    key={finding.id}
-                    onClick={() => setSelected(finding)}
-                    className={`text-left p-6 rounded-[24px] transition-all duration-300 ${
-                      selected.id === finding.id
-                        ? "bg-white shadow-xl scale-[1.02] ring-1 ring-black/5"
-                        : "bg-white/5 border border-white/5 hover:bg-white/10 text-gray-500"
-                    }`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
-                        selected.id === finding.id ? "bg-gray-50 " + sc.color : "bg-white/5 text-gray-500"
-                      }`}>
-                        <Icon size={18} strokeWidth={2.5} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-[14px] font-bold leading-tight [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif] ${selected.id === finding.id ? "text-gray-900" : "text-white/60"}`}>
-                          {finding.title}
-                        </p>
-                        <div className="flex items-center gap-3 mt-2">
-                          <span className={`text-[11px] font-black uppercase tracking-widest ${sc.color}`}>{sc.label}</span>
-                          <span className="w-1 h-1 rounded-full bg-gray-500" />
-                          <span className="text-[12px] font-bold text-gray-500">{finding.category}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            {/* Dark background grid pattern */}
+            <div className="absolute top-0 left-[90px] right-0 bottom-0 pointer-events-none" style={{ backgroundImage: "linear-gradient(to bottom, transparent 99%, rgba(255,255,255,0.02) 100%)", backgroundSize: "100% 60px" }} />
 
-            {/* Findings DETAIL Card (WHITE SENTINEL STYLE) ──────────────── */}
-            <div className="col-span-12 lg:col-span-8 flex flex-col gap-8">
-              {filteredFindings.length > 0 ? (() => {
-                const displayFinding = filteredFindings.find(f => f.id === selected.id) || filteredFindings[0];
-                const sc = severityConfig[displayFinding.severity as keyof typeof severityConfig];
-                const Icon = sc.icon;
-                return (
-                  <div className="bg-white rounded-[24px] shadow-2xl border border-gray-50 overflow-hidden flex flex-col [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
-                    <div className="px-8 py-8 border-b border-gray-50 flex items-start justify-between">
-                       <h2 className="text-[15px] font-bold text-gray-900 tracking-tight">Tampered Identification</h2>
-                       <ShieldCheck size={18} className={sc.color} />
-                    </div>
+            <div className="relative pt-10">
+              
+              {/* Active Current Time Line (Apple Calendar Style) */}
+              <div className="flex w-full absolute top-[18px] left-0 z-20 pointer-events-none">
+                <div className="w-[85px] shrink-0 text-right pr-3 -mt-2">
+                   <span className="text-[11px] font-bold text-[#007AFF] [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">09:15 AM</span>
+                </div>
+                <div className="flex-1 relative flex items-center">
+                   <div className="absolute left-[-5px] w-2.5 h-2.5 rounded-full bg-[#007AFF] shadow-[0_0_8px_rgba(0,122,255,0.8)]" />
+                   <div className="h-[1.5px] bg-[#007AFF] w-full opacity-80" />
+                </div>
+              </div>
 
-                    <div className="p-8 space-y-8">
-                       <div className="flex items-start gap-6">
-                          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border shadow-sm ${sc.color} bg-gray-50 border-gray-100`}>
-                             <Icon size={28} strokeWidth={2.5} />
-                          </div>
-                          <div className="pt-1">
-                             <h2 className="text-gray-900 font-bold text-[18px] tracking-tight leading-tight mb-2 uppercase">
-                                {displayFinding.title}
-                             </h2>
-                             <div className="flex items-center gap-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-                                <span className="flex items-center gap-2"><BarChart2 size={14} /> {displayFinding.category}</span>
-                                <span className="flex items-center gap-2"><Calendar size={14} /> {displayFinding.timestamp}</span>
-                             </div>
-                          </div>
-                       </div>
+              {/* Vertical border line spanning all entries */}
+              <div className="absolute top-0 bottom-0 left-[85px] w-px bg-white/10 z-0" />
 
-                      {/* Integrated Rings Section */}
-                      <div className="flex items-center gap-8 p-6 bg-gray-50 rounded-[28px] border border-gray-100">
-                         <div className="relative w-28 h-28 shrink-0">
-                            <svg className="w-full h-full -rotate-90" viewBox="0 0 112 112">
-                               <circle cx="56" cy="56" r="48" fill="none" stroke="#FFFFFF" strokeWidth="10" strokeLinecap="round" />
-                               <circle cx="56" cy="56" r="48" fill="none" stroke="#007AFF" strokeWidth="10" strokeDasharray={301} strokeDashoffset={301 * 0.1} strokeLinecap="round" />
-                               <circle cx="56" cy="56" r="36" fill="none" stroke="#FFFFFF" strokeWidth="10" strokeLinecap="round" />
-                               <circle cx="56" cy="56" r="36" fill="none" stroke={sc.ring} strokeWidth="10" strokeDasharray={226} strokeDashoffset={226 * (1 - displayFinding.riskScore/100)} strokeLinecap="round" />
-                            </svg>
-                         </div>
-                         <div className="flex-1 space-y-2">
-                            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Case Authenticator</h3>
-                            <p className="text-gray-700 text-[15px] font-bold leading-relaxed">Structural confidence is currently <span className="text-gray-900 font-bold">"{displayFinding.riskScore}%"</span> based on font-substitution nodes.</p>
-                            <div className="flex gap-4 pt-4">
-                               <button className={`flex-1 py-3.5 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all ${sc.color} bg-white shadow-sm border border-gray-100`}>Escalate</button>
-                               <button className="flex-1 py-3.5 rounded-xl text-[12px] font-black uppercase tracking-widest text-gray-400 bg-white border border-gray-100">Ignore</button>
-                            </div>
-                         </div>
-                      </div>
+              {filteredFindings.map((finding, index) => (
+                <FindingBlock key={finding.id} finding={finding} index={index} />
+              ))}
+              
+              {filteredFindings.length === 0 && (
+                <div className="pl-[110px] py-12 text-[#8E8E93] text-[13px] font-medium [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
+                   No findings matched your search criteria.
+                </div>
+              )}
 
-                      <p className="text-gray-700 text-[15px] font-bold leading-relaxed border-t border-gray-50 pt-8">{displayFinding.description}</p>
-                    </div>
-                  </div>
-                );
-              })() : null}
-
-               {/* FORENSIC PROTOCOL (PROPER STRUDCTURE) ───────── */}
-               <div className="bg-[#121836] rounded-[24px] p-6 border border-white/10 shadow-2xl [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
-                  <header className="flex items-center justify-between mb-4">
-                     <div className="flex items-center gap-2">
-                        <History size={16} className="text-[#007AFF]" strokeWidth={2.5} />
-                        <h2 className="text-[15px] font-bold text-white tracking-tight">Forensic Protocol</h2>
-                     </div>
-                  </header>
-                  <p className="text-[#8E8E93] text-[13px] font-medium leading-relaxed">
-                     XREF mutations indicate invisible content layers. Check Audit Trail.
-                  </p>
-               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+  );
+}
+
+function FindingBlock({ finding, index }: { finding: any, index: number }) {
+  const sc = severityConfig[finding.severity as keyof typeof severityConfig];
+  const Icon = sc.icon;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
+      className="flex w-full mb-[2px] relative z-10 group"
+    >
+      <div className="w-[85px] shrink-0 text-right pr-3 py-3 relative">
+          <span className="text-[11px] font-bold text-[#8E8E93] [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">{finding.timestamp}</span>
+          <div className="absolute top-[20px] left-full w-[2000px] h-px bg-white/5 pointer-events-none" />
+      </div>
+
+      <div className="flex-1 pl-[2px] pr-8 py-1.5 min-w-0">
+          <div className={`
+             px-8 py-6 rounded-r-xl rounded-l-sm border-l-[4px] 
+             ${sc.border} ${sc.bg} ${sc.hoverBg}
+             transition-all duration-200 backdrop-blur-md relative overflow-hidden
+             [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]
+          `}>
+             <div className="flex items-start justify-between relative z-10 lg:gap-8 flex-col lg:flex-row">
+                <div className="flex-1 min-w-0 pr-4">
+                   <div className="flex items-center gap-3 mb-2">
+                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 bg-black/20 ${sc.color}`}>
+                           <Icon size={16} strokeWidth={2.5} />
+                       </div>
+                       <h3 className={`text-[15px] font-black uppercase tracking-widest ${sc.color} truncate`}>
+                         {finding.title}
+                       </h3>
+                   </div>
+                   <p className="text-[14px] font-bold text-gray-300 leading-relaxed mb-6 max-w-2xl">
+                     {finding.description}
+                   </p>
+                   
+                   <div className="flex items-center gap-5">
+                      <span className="text-[11px] font-black uppercase tracking-widest text-[#8E8E93] bg-black/20 px-3 py-1.5 rounded-full border border-white/5 truncate max-w-[250px]">
+                        Rec: {finding.recommendation}
+                      </span>
+                      <div className="flex gap-2">
+                         <button className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${sc.color} bg-black/20 hover:bg-black/40 border border-white/5`}>Escalate</button>
+                         <button className="px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-400 bg-black/20 hover:bg-black/40 border border-white/5">Ignore</button>
+                      </div>
+                   </div>
+                </div>
+                
+                <div className="shrink-0 flex items-center gap-6 bg-black/20 px-6 py-4 rounded-[20px] border border-white/5 shadow-inner mt-6 lg:mt-0">
+                   <div className="text-right flex flex-col justify-center">
+                     <span className="text-[10px] font-black uppercase tracking-widest text-[#8E8E93] block mb-1">Risk Score</span>
+                     <h4 className="text-[34px] font-bold leading-none tracking-tight text-white mb-2">{finding.riskScore}%</h4>
+                     <div className={`inline-flex px-2 py-1 rounded shadow-sm border border-current text-[10px] font-black uppercase tracking-widest ${sc.color} bg-black/40 self-end`}>
+                        {sc.label}
+                     </div>
+                   </div>
+                   <div className="relative w-[72px] h-[72px] shrink-0">
+                      <svg className="w-full h-full -rotate-90" viewBox="0 0 72 72">
+                         <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="6" strokeLinecap="round" />
+                         <circle cx="36" cy="36" r="30" fill="none" stroke={sc.ring} strokeWidth="6" strokeDasharray={188} strokeDashoffset={188 * (1 - finding.riskScore/100)} strokeLinecap="round" />
+                      </svg>
+                   </div>
+                </div>
+             </div>
+          </div>
+      </div>
+    </motion.div>
   );
 }
