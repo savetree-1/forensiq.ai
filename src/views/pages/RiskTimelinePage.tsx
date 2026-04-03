@@ -86,11 +86,11 @@ export function RiskTimelinePage() {
     <div className="flex h-screen bg-[#0b0f24] font-inter overflow-hidden text-white/90">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto relative bg-[#0b0f24]">
+      <div className="flex-1 overflow-y-auto relative bg-[#0b0f24]">
         {/* Subtle background glow */}
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#007AFF]/5 rounded-full blur-[120px] pointer-events-none" />
         
-        <div className="relative z-10 p-8 w-full max-w-[1200px] mx-auto min-h-full flex flex-col pb-24">
+        <div className="relative z-10 p-8 w-full max-w-[1200px] mx-auto pb-24">
           
           {/* ─── NAVIGATION BAR ─────────────────────── */}
           <div className="flex items-center justify-between h-8 mt-1 mb-10 shrink-0">
