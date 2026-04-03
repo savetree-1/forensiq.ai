@@ -6,7 +6,6 @@ import {
   Table2,
   TrendingUp,
   AlertTriangle,
-  StickyNote,
   History,
   FileDown,
 } from "lucide-react";
@@ -19,7 +18,6 @@ const navItems = [
   { icon: Table2, label: "Metadata Diff", path: "/dashboard/metadata-diff" },
   { icon: TrendingUp, label: "Risk Timeline", path: "/dashboard/risk-timeline" },
   { icon: AlertTriangle, label: "Findings", path: "/dashboard/findings" },
-  { icon: StickyNote, label: "Case Notes", path: "/dashboard/case-notes" },
   { icon: History, label: "Audit Trail", path: "/dashboard/audit-trail" },
   { icon: FileDown, label: "Export Report", path: "/dashboard/export-report" },
 ];
