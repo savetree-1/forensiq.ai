@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { HomePage } from "@/views/pages/HomePage";
 import { HowItWorksPage } from "@/views/pages/HowItWorksPage";
+import { DashboardPage } from "@/views/pages/DashboardPage";
 import { UploadQueuePage } from "@/views/pages/UploadQueuePage";
 import { SignatureLabPage } from "@/views/pages/SignatureLabPage";
 import { MetadataDiffPage } from "@/views/pages/MetadataDiffPage";
@@ -14,7 +15,7 @@ export const AppRoutes = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/try-it-now" element={<Navigate to="/dashboard/metadata-diff" replace />} />
-      <Route path="/dashboard" element={<Navigate to="/dashboard/metadata-diff" replace />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/dashboard/upload-queue" element={<UploadQueuePage />} />
       <Route path="/dashboard/signature-lab" element={<SignatureLabPage />} />
       <Route path="/dashboard/metadata-diff" element={<MetadataDiffPage />} />
