@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Printer, ShieldAlert, AlertTriangle, FileText, FileSpreadsheet } from "lucide-react";
+import { Printer, ShieldAlert, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function ReportPage() {
@@ -39,128 +39,120 @@ export function ReportPage() {
              transition={{ duration: 0.5, ease: "easeOut" }}
              className="w-full max-w-[900px] print:max-w-none bg-white print:shadow-none shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden text-gray-900 border border-gray-200 print:border-none print:m-0 [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]"
           >
-             {/* 1. Brand Header Strip */}
-             <div className="bg-[#007AFF] px-14 py-8 mb-10 flex items-center justify-between relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_#fff_1px,_transparent_1px)] [background-size:20px_20px]" />
-                <div className="relative z-10 flex items-center gap-6">
-                   <div className="bg-white p-2 rounded-xl shadow-lg">
-                      <img src="/src/assets/branding/image copy 2.png" alt="ForensIQ Logo" className="h-10 invert brightness-0" />
-                   </div>
-                   <div className="text-white">
-                      <h1 className="text-[24px] font-black tracking-tight leading-none mb-1">Forensic analysis report</h1>
-                      <div className="flex items-center gap-3 text-[11px] font-bold text-white/70 uppercase tracking-widest">
-                         <span>ForensIQ laboratory</span>
-                         <span className="w-1 h-1 bg-white/30 rounded-full" />
-                         <span>Session FQ-8992A</span>
-                      </div>
-                   </div>
-                </div>
-                <div className="text-right text-white relative z-10">
-                   <div className="text-[12px] font-black uppercase tracking-widest mb-0.5">Official certification</div>
-                   <div className="text-[10px] font-bold text-white/60">Issued: Oct 24, 2023</div>
-                </div>
-             </div>
-
-             {/* Case Summary Grid */}
-             <div className="px-14 pb-10 border-b border-gray-100 grid grid-cols-3 gap-10">
+             {/* 1. Authoritative Header Strip */}
+             <div className="border-t-[6px] border-[#007AFF] px-14 py-10 flex items-start justify-between">
                 <div>
-                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Status</span>
-                   <div className="flex items-center gap-2 text-red-600">
+                   <img src="/src/assets/branding/image copy 2.png" alt="ForensIQ Logo" className="h-8 invert opacity-90 mb-6" />
+                   <h1 className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">Forensic Extraction Report</h1>
+                   <p className="text-[12px] font-bold text-gray-400 mt-2 tracking-tight">Report ID: FQ-2023-8992A-SECURED</p>
+                </div>
+                <div className="text-right">
+                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 border border-red-100 rounded text-red-600 mb-4">
                       <ShieldAlert size={14} />
-                      <span className="text-[14px] font-black leading-none">Verified forgery</span>
+                      <span className="text-[11px] font-black uppercase tracking-widest">Verified Forgery</span>
                    </div>
-                </div>
-                <div>
-                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Confidence</span>
-                   <span className="text-[14px] font-black text-gray-900">0.00% Score</span>
-                </div>
-                <div>
-                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Extraction engine</span>
-                   <span className="text-[14px] font-black text-gray-900 border-l-2 border-[#007AFF] pl-2">Neural v4.22</span>
+                   <div className="text-[11px] font-bold text-gray-400 leading-tight">
+                      Extraction Date: <span className="text-gray-900 font-black">24 OCT 2023</span><br />
+                      Extraction Time: <span className="text-gray-900 font-black">09:18 EST</span>
+                   </div>
                 </div>
              </div>
 
-             {/* Executive Summary Section */}
-             <div className="px-14 py-10">
-                <div className="flex items-center gap-2 mb-4">
-                   <div className="w-1.5 h-6 bg-[#007AFF] rounded-full" />
-                   <h3 className="text-[16px] font-black text-gray-900">Executive summary</h3>
+             {/* Primary Case Data */}
+             <div className="px-14 py-8 bg-gray-50 border-y border-gray-100 grid grid-cols-4 gap-8">
+                <div>
+                   <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Risk Verdict</span>
+                   <span className="text-[13px] font-black text-red-600">Severe</span>
                 </div>
-                <p className="text-[14px] font-medium text-gray-600 leading-relaxed text-justify max-w-3xl">
-                   Analysis of the asset, <b>Account_statement_lending_citi.pdf</b>, has confirmed severe structural compromise. The investigative framework has isolated typographical injections and layering anomalies consistent with synthetic forgery.
+                <div>
+                   <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Confidence</span>
+                   <span className="text-[13px] font-black text-gray-900">0.00%</span>
+                </div>
+                <div>
+                   <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Engine Version</span>
+                   <span className="text-[13px] font-black text-gray-900">Neural v4.22</span>
+                </div>
+                <div>
+                   <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Analysis Mode</span>
+                   <span className="text-[13px] font-black text-gray-900">Standard Extraction</span>
+                </div>
+             </div>
+
+             {/* Investigative Summary */}
+             <div className="px-14 py-12 border-b border-gray-100">
+                <h3 className="text-[13px] font-black text-gray-400 uppercase tracking-widest mb-4">1.0 Executive Summary</h3>
+                <p className="text-[15px] font-medium text-gray-700 leading-relaxed text-left max-w-3xl">
+                   This formal report serves as the final authentication record for the asset designated <b>Account_statement_lending_citi.pdf</b>. Synthetic forensics extraction has isolated critical structural discrepancies—specifically unauthorized typographical substitution and vector layering anomalies. These findings collectively render the document as <b>Compromised</b> and unsuitable for standard verification workflows.
                 </p>
              </div>
 
-             {/* Technical Context Table */}
-             <div className="px-14 py-10 bg-gray-50/50 border-y border-gray-100">
-                <h3 className="text-[14px] font-black text-gray-900 mb-6 flex items-center gap-2">
-                   <FileSpreadsheet size={16} className="text-[#007AFF]" /> Document provenance
-                </h3>
-                <div className="grid grid-cols-2 gap-x-12 gap-y-5">
-                   <ProvenanceRow label="File name" value="Account_statement_lending_citi.pdf" />
-                   <ProvenanceRow label="File size" value="2.4 MB (Encrypted stream)" />
-                   <ProvenanceRow label="Structure" value="ISO-32000-1 / PDF 1.7" />
-                   <ProvenanceRow label="Investigator" value="Officer John Doe" />
+             {/* Technical Provenance */}
+             <div className="px-14 py-12 border-b border-gray-100 bg-white">
+                <h3 className="text-[13px] font-black text-gray-400 uppercase tracking-widest mb-8">2.0 Technical Provenance</h3>
+                <div className="grid grid-cols-2 gap-x-12 gap-y-6">
+                   <ProvenanceRow label="Source Filename" value="Account_statement_lending_citi.pdf" />
+                   <ProvenanceRow label="Binary Size" value="2.4 MB (2,458,112 bytes)" />
+                   <ProvenanceRow label="Architecture" value="Adobe PDF v1.7 (ISO-32000)" />
+                   <ProvenanceRow label="MIME Type" value="application/pdf" />
                 </div>
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                   <div className="flex items-start gap-4 mb-2">
-                      <span className="text-[10px] font-black text-gray-400 w-16 uppercase tracking-widest">SHA-256</span>
-                      <span className="font-mono text-[11px] text-gray-400 break-all leading-relaxed">8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc3279c1</span>
+                <div className="mt-10 pt-8 border-t border-gray-100 flex items-start gap-4">
+                   <div className="shrink-0 bg-gray-50 border border-gray-200 px-3 py-1 rounded text-[9px] font-black text-gray-500 uppercase tracking-widest">Hash Map</div>
+                   <div className="flex-1 space-y-2">
+                      <div className="flex items-start gap-4">
+                         <span className="text-[10px] font-black text-gray-400 w-16 uppercase pb-0.5">SHA-256</span>
+                         <span className="font-mono text-[11px] text-gray-500 break-all">8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc3279c1</span>
+                      </div>
                    </div>
                 </div>
              </div>
 
-             {/* Forensic Anomalies Section */}
-             <div className="px-14 py-10">
-                <div className="flex items-center gap-2 mb-8 border-b border-gray-100 pb-4">
-                   <AlertTriangle size={18} className="text-red-500" />
-                   <h3 className="text-[16px] font-black text-gray-900">Detected risk vectors</h3>
-                </div>
-                
+             {/* Risk Anomaly Detail */}
+             <div className="px-14 py-12">
+                <h3 className="text-[13px] font-black text-gray-400 uppercase tracking-widest mb-10">3.0 Forensic Diagnostic Index</h3>
                 <div className="space-y-12">
                    <DetailAnomalyRow 
-                     title="Font substitution on signature block" 
-                     detail="PDF text stream declared as 'Helvetica Neue' rendered using an 'Arial' subset. Typical of post-export modification via external PDF editors."
+                     title="Font Substitution Signature Block" 
+                     detail="Primary text stream declared as 'Helvetica Neue' was rendered using an injected 'Arial' subset. This mismatch confirms retroactive layer modification post-issuance."
                      sev="Critical"
-                     location="Page 03, block 07"
+                     location="Page 03 // Block 07"
                    />
                    <DetailAnomalyRow 
-                     title="Unauthorized vector overlay" 
-                     detail="Numerical credit entry ($24,000.00) exhibits a distinct Z-index coordinate mismatch against the primary document architecture."
+                     title="Unauthorized Vector Overlay" 
+                     detail="Numerical entry ($24,000.00) exhibits a distinct Z-index coordinate mismatch against the primary table architecture. Indicates a visual insertion on top of original data."
                      sev="High"
-                     location="Page 02, block 12"
+                     location="Page 02 // Block 12"
                    />
                 </div>
              </div>
 
-             {/* Authorisation & Vertical Footer */}
-             <div className="mt-auto px-14 pb-20 pt-10 border-t-4 border-[#007AFF] flex justify-between items-end bg-gradient-to-t from-gray-50 to-white">
+             {/* Certification and Signature */}
+             <div className="mt-auto px-14 py-16 bg-gray-50 border-t border-gray-100 flex justify-between items-end">
                 <div className="max-w-xs">
-                   <h4 className="text-[12px] font-black text-gray-900 mb-2">Certification log</h4>
-                   <p className="text-[11px] font-bold text-gray-400 leading-relaxed italic">
-                      This record is immutably stored within the ForensIQ data matrix. It serves as a binding certification of document state as of the issuance timestamp.
+                   <h4 className="text-[11px] font-black text-gray-900 uppercase tracking-[0.2em] mb-3">5.0 Official Certification</h4>
+                   <p className="text-[11px] font-bold text-gray-400 leading-relaxed text-justify">
+                      This diagnostic report was generated via the ForensIQ Secure API. All extraction protocols are logged immutably within the administrative audit matrix and tied to the investigator listed.
                    </p>
                 </div>
                 <div className="text-right">
-                   <div className="w-48 h-12 border-b-2 border-gray-200 mb-2 flex items-center justify-center">
-                      <span className="font-[Brush_Script_MT] text-[28px] text-[#0b0f24] opacity-50 italic">John Doe</span>
+                   <div className="w-56 h-14 border-b border-gray-300 mb-2 flex items-center justify-center grayscale opacity-60">
+                      <span className="font-[Brush_Script_MT] text-[32px] text-blue-900 italic">John Doe</span>
                    </div>
-                   <p className="text-[11px] font-black text-gray-900 uppercase tracking-widest">Authorized investigator</p>
-                   <p className="text-[10px] font-bold text-[#007AFF] mt-1 italic">FIQ-8900-X-LAB / SECURED</p>
+                   <p className="text-[11px] font-black text-gray-900 uppercase tracking-widest">Certified Investigator</p>
+                   <p className="text-[9px] font-bold text-gray-400 mt-1 italic tracking-tight">Credential ID: FIQ-8900-X-SECURED</p>
                 </div>
              </div>
 
-             {/* Formal Blue Brand Footer */}
-             <div className="bg-[#0b0f24] px-14 py-8 flex justify-between items-center text-white relative">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-[#007AFF]" />
+             {/* Final Corporate Footer */}
+             <div className="bg-[#0b0f24] px-14 py-8 flex justify-between items-center text-white border-t-4 border-[#007AFF]">
                 <div className="flex items-center gap-4">
                    <img src="/src/assets/branding/image copy 2.png" alt="ForensIQ Logo" className="h-6 opacity-30" />
                    <div className="w-px h-6 bg-white/10" />
-                   <div className="text-[10px] font-black uppercase tracking-widest text-white/50">ForensIQ forensic division</div>
+                   <div className="text-[10px] font-black uppercase tracking-widest text-white/50">ForensIQ Forensic Division</div>
                 </div>
-                <div className="flex gap-6 text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                <div className="flex gap-8 text-[9px] font-black uppercase tracking-[0.2em] text-white/30">
                    <span>Page 01 of 01</span>
-                   <span>Strictly confidential</span>
+                   <span>Strictly Confidential</span>
+                   <span>© 2023 ForensIQ.ai</span>
                 </div>
              </div>
 
