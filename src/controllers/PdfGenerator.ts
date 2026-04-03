@@ -1,10 +1,9 @@
 import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+import autoTable, { FontStyle, Color } from "jspdf-autotable";
 import { ReportData } from "../models/ReportData";
 
 /**
  * Generates a high-severity formal PDF directly in the browser
- * This replicates the professional "Sentinel Prism" layout without requiring a LaTeX engine.
  */
 export async function downloadForensicPdf(data: ReportData) {
   try {
@@ -14,16 +13,15 @@ export async function downloadForensicPdf(data: ReportData) {
       format: 'a4'
     });
 
-    // --- Constants and Colors ---
     const margin = 20;
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const themeBlue = [0, 122, 255]; // #007AFF
-    const themeDark = [11, 15, 42];  // #0B0F2A
-    const textGray = [80, 80, 80];
-    const severeRed = [250, 17, 79];
+    const themeBlue: [number, number, number] = [0, 122, 255];
+    const themeDark: [number, number, number] = [11, 15, 42];
+    const textGray: [number, number, number] = [102, 102, 102];
+    const severeRed: [number, number, number] = [250, 17, 79];
 
-    // --- 1. Top Branding Strip (Auth Bar) ---
+    // --- 1. Top Branding Strip ---
     doc.setFillColor(themeBlue[0], themeBlue[1], themeBlue[2]);
     doc.rect(0, 0, pageWidth, 8, 'F');
 
@@ -43,24 +41,17 @@ export async function downloadForensicPdf(data: ReportData) {
     doc.setFillColor(255, 235, 235);
     doc.setDrawColor(severeRed[0], severeRed[1], severeRed[2]);
     doc.roundedRect(pageWidth - margin - 45, 20, 45, 12, 1, 1, 'FD');
-    
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
     doc.setTextColor(severeRed[0], severeRed[1], severeRed[2]);
     doc.text("VERIFIED FORGERY", pageWidth - margin - 40, 26);
-    doc.setFontSize(7);
-    doc.setTextColor(textGray[0], textGray[1], textGray[2]);
-    doc.text("High Severity Protocol", pageWidth - margin - 40, 30);
 
-    // --- 3. Executive Summary Bar ---
+    // --- 3. Executive Summary ---
     doc.setFillColor(245, 245, 248);
     doc.rect(margin, 45, pageWidth - (margin * 2), 35, 'F');
-    
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9);
     doc.setTextColor(textGray[0], textGray[1], textGray[2]);
     doc.text("1.0 EXECUTIVE SUMMARY", margin + 5, 52);
-
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.setTextColor(50, 50, 50);
@@ -88,8 +79,8 @@ export async function downloadForensicPdf(data: ReportData) {
       body: provenanceData,
       margin: { left: margin },
       theme: 'plain',
-      styles: { fontSize: 9, cellPadding: 3, textColor: [40, 40, 40] },
-      columnStyles: { 0: { fontStyle: 'bold', textColor: textGray, width: 40 } }
+      styles: { fontSize: 9, cellPadding: 3, textColor: [40, 40, 40] as Color },
+      columnStyles: { 0: { fontStyle: 'bold' as FontStyle, textColor: textGray as Color, cellWidth: 40 } }
     });
 
     // --- 5. Diagnostic Index ---
@@ -100,8 +91,14 @@ export async function downloadForensicPdf(data: ReportData) {
     doc.text("3.0 FORENSIC DIAGNOSTIC INDEX", margin, currentY);
 
     const anomalyRows = data.anomalies.map(a => [
-      { content: `${a.title.toUpperCase()}\n${a.severity} Severity Vector`, styles: { fontStyle: 'bold', textColor: severeRed } },
-      { content: `${a.detail}\nLocation: ${a.location}`, styles: { textColor: [60,60,60] } }
+      { 
+        content: `${a.title.toUpperCase()}\n${a.severity} Severity Vector`, 
+        styles: { fontStyle: 'bold' as FontStyle, textColor: severeRed as Color } 
+      },
+      { 
+        content: `${a.detail}\nLocation: ${a.location}`, 
+        styles: { textColor: [60,60,60] as Color } 
+      }
     ]);
 
     autoTable(doc, {
@@ -110,41 +107,34 @@ export async function downloadForensicPdf(data: ReportData) {
       margin: { left: margin },
       theme: 'grid',
       styles: { fontSize: 8, cellPadding: 5 },
-      columnStyles: { 0: { width: 50 }, 1: { cellWidth: 'auto' } }
+      columnStyles: { 0: { cellWidth: 50 }, 1: { cellWidth: 'auto' } }
     });
 
     // --- 6. Signature Block ---
     const footerSigY = pageHeight - 45;
     doc.setDrawColor(200, 200, 200);
     doc.line(pageWidth - 80, footerSigY, pageWidth - margin, footerSigY);
-    
     doc.setFont("times", "italic");
     doc.setFontSize(18);
     doc.setTextColor(themeDark[0], themeDark[1], themeDark[2]);
     doc.text(data.investigator.name || "Authorized User", pageWidth - 70, footerSigY - 5);
-
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
     doc.setTextColor(textGray[0], textGray[1], textGray[2]);
     doc.text("Authorized Investigator", pageWidth - 75, footerSigY + 5);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7);
-    doc.text(`ID: ${data.investigator.id || 'N/A'}`, pageWidth - 75, footerSigY + 9);
 
     // --- 7. Formal Footer Strip ---
     doc.setFillColor(themeDark[0], themeDark[1], themeDark[2]);
     doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
-    
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7);
     doc.setTextColor(255, 255, 255);
     doc.text("FORENSIQ FORENSIC DIVISION // SECURE OUTPUT", margin, pageHeight - 7);
     doc.text("STRICTLY CONFIDENTIAL", pageWidth - margin - 40, pageHeight - 7);
 
-    // --- Final Download ---
+    // --- FINAL PDF SAVE ---
     doc.save(`ForensIQ_Report_${data.metadata.caseId || 'Export'}.pdf`);
   } catch (error) {
     console.error("PDF Generation Error:", error);
-    alert("Critical failure during PDF generation. Check console for details.");
   }
 }
