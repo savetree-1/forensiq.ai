@@ -27,7 +27,7 @@ export function Sidebar() {
   const location = useLocation();
 
   return (
-    <div className="w-[280px] min-h-screen bg-[#080C24] flex flex-col py-6 border-r border-white/5 shrink-0">
+    <div className="w-[280px] min-h-screen bg-[#080C24] flex flex-col py-6 border-r border-white/5 shrink-0 print:hidden">
       {/* Logo */}
       <div className="mb-8 px-5 flex items-center">
         <img src={brandLogo} alt="ForensIQ.ai Logo" className="h-16 w-full object-contain object-left" />

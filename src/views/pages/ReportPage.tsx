@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 
 export function ReportPage() {
   return (
-    <div className="flex h-screen bg-[#0b0f24] font-inter overflow-hidden text-white/90">
+    <div className="flex h-screen bg-[#0b0f24] font-inter overflow-hidden text-white/90 print:block print:h-auto print:overflow-visible print:bg-white">
       <Sidebar />
 
-      <div className="flex-1 overflow-y-auto relative bg-[#0b0f24] print:bg-white print:overflow-visible">
+      <div className="flex-1 overflow-y-auto relative bg-[#0b0f24] print:bg-white print:overflow-visible print:block">
         
         {/* Floating Action Bar (Hidden when printing via Tailwind 'print:hidden') */}
         <div className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 bg-[#0b0f24]/80 backdrop-blur-md border-b border-white/5 shadow-2xl print:hidden">
@@ -33,13 +33,13 @@ export function ReportPage() {
         </div>
 
         {/* Report Document Canvas */}
-        <div className="relative py-12 px-8 flex justify-center pb-32 print:p-0 print:py-0">
+        <div className="relative py-12 px-8 flex justify-center pb-32 print:block print:p-0">
           
           <motion.div 
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.5, ease: "easeOut" }}
-             className="w-full max-w-[900px] bg-white print:shadow-none shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden text-gray-900 border border-gray-200 print:border-none [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]"
+             className="w-full max-w-[900px] print:max-w-none bg-white print:shadow-none shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden text-gray-900 border border-gray-200 print:border-none print:m-0 [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]"
           >
              {/* 1. Header / Letterhead */}
              <div className="px-14 pt-16 pb-8 border-b-4 border-gray-900 flex items-start justify-between">
