@@ -1,6 +1,8 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Printer, ShieldAlert, FileText } from "lucide-react";
+import { Printer, ShieldAlert, FileText, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { downloadLatexSource } from "@/controllers/LatexGenerator";
+import { MOCK_REPORT_DATA } from "@/models/ReportData";
 
 export function ReportPage() {
   return (
@@ -20,6 +22,13 @@ export function ReportPage() {
            </div>
            
            <div className="flex items-center gap-3 space-x-2">
+              <button 
+                onClick={() => downloadLatexSource(MOCK_REPORT_DATA)}
+                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-[12px] font-bold transition-all border border-white/10"
+              >
+                <Code2 size={14} />
+                Download .tex
+              </button>
               <button 
                 onClick={() => window.print()}
                 className="flex items-center gap-2 px-6 py-2 bg-[#007AFF] hover:bg-[#007AFF]/80 text-white rounded-xl text-[12px] font-bold transition-all shadow-lg shadow-[#007AFF]/20"
