@@ -1,4 +1,6 @@
 import brandLogo from "@/assets/branding/logo.png";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
 
 type NavItem = {
   label: string;
@@ -10,10 +12,20 @@ type DesktopNavbarProps = {
 };
 
 export const DesktopNavbar = ({ items }: DesktopNavbarProps) => {
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuthStore();
   const hideCta = typeof window !== "undefined" && window.location.pathname === "/try-it-now";
 
+  const handleTryNow = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard/upload-queue");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
-    <div className="hidden items-center md:flex">
+    <div className="hidden items-center md:flex w-full">
       <a
         href="/"
         className="flex shrink-0 items-center"
@@ -21,7 +33,7 @@ export const DesktopNavbar = ({ items }: DesktopNavbarProps) => {
       >
         <img
           src={brandLogo}
-          alt="Resistance AI"
+          alt="ForensIQ AI"
           className="h-10 w-auto"
         />
       </a>
@@ -49,13 +61,25 @@ export const DesktopNavbar = ({ items }: DesktopNavbarProps) => {
         ))}
       </nav>
       {!hideCta && (
-        <div className="ml-auto pl-8">
-          <a
-            href="/try-it-now"
+        <div className="ml-auto pl-8 flex items-center gap-4">
+          {!isAuthenticated ? (
+            <button
+              onClick={() => navigate("/login")}
+              className="text-base font-semibold text-slate-700 hover:text-slate-900 transition mr-2"
+            >
+              Sign in / Sign up
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 mr-4">
+               <span className="text-sm font-bold text-slate-500 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full border border-slate-200">Session Active</span>
+            </div>
+          )}
+          <button
+            onClick={handleTryNow}
             className="inline-flex items-center justify-center rounded-xl bg-[#67E8C8] px-7 py-3 text-base font-semibold text-slate-900 shadow-[rgba(10,13,18,0.08)_0px_8px_20px_0px] transition hover:bg-[#5BDFC0]"
           >
-            Try it now
-          </a>
+            {isAuthenticated ? "Go to Dashboard" : "Try it now"}
+          </button>
         </div>
       )}
     </div>

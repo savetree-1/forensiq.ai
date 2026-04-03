@@ -132,8 +132,21 @@ export async function downloadForensicPdf(data: ReportData) {
     doc.text("FORENSIQ FORENSIC DIVISION // SECURE OUTPUT", margin, pageHeight - 7);
     doc.text("STRICTLY CONFIDENTIAL", pageWidth - margin - 40, pageHeight - 7);
 
-    // --- FINAL PDF SAVE ---
-    doc.save(`ForensIQ_Report_${data.metadata.caseId || 'Export'}.pdf`);
+    // --- FINAL PDF SAVE (Blob Method for reliability) ---
+    const pdfBlob = doc.output('blob');
+    const url = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    
+    // Sanitize case ID for filename
+    const safeCaseId = (data.metadata.caseId || 'Export').replace(/[^a-z0-9]/gi, '_');
+    
+    link.href = url;
+    link.download = `ForensIQ_Report_${safeCaseId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
   } catch (error) {
     console.error("PDF Generation Error:", error);
   }
