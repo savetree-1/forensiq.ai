@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Printer, ShieldAlert, FileText, Code2 } from "lucide-react";
+import { ShieldAlert, FileText, Code2, Download } from "lucide-react";
 import { motion } from "framer-motion";
+import { downloadForensicPdf } from "@/controllers/PdfGenerator";
 import { downloadLatexSource } from "@/controllers/LatexGenerator";
 import { MOCK_REPORT_DATA } from "@/models/ReportData";
 
@@ -24,17 +25,17 @@ export function ReportPage() {
            <div className="flex items-center gap-3 space-x-2">
               <button 
                 onClick={() => downloadLatexSource(MOCK_REPORT_DATA)}
-                className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-[12px] font-bold transition-all border border-white/10"
+                className="p-2 hover:bg-white/5 text-gray-400 hover:text-white rounded-lg transition-all border border-white/5"
+                title="Download .tex Source"
               >
-                <Code2 size={14} />
-                Download .tex
+                <Code2 size={16} />
               </button>
               <button 
-                onClick={() => window.print()}
+                onClick={() => downloadForensicPdf(MOCK_REPORT_DATA)}
                 className="flex items-center gap-2 px-6 py-2 bg-[#007AFF] hover:bg-[#007AFF]/80 text-white rounded-xl text-[12px] font-bold transition-all shadow-lg shadow-[#007AFF]/20"
               >
-                <Printer size={14} />
-                Generate final report
+                <Download size={14} />
+                Download diagnostic PDF
               </button>
            </div>
         </div>
