@@ -192,10 +192,8 @@ function FindingBlock({ finding, index }: { finding: any, index: number }) {
           `}>
              <div className="flex items-start justify-between relative z-10 lg:gap-8 flex-col lg:flex-row">
                 <div className="flex-1 min-w-0 pr-4">
-                   <div className="flex items-center gap-3 mb-2">
-                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 bg-black/20 ${sc.color}`}>
-                           <Icon size={16} strokeWidth={2.5} />
-                       </div>
+                   <div className="flex items-center gap-2 mb-2 w-full">
+                       <Icon size={18} strokeWidth={2.5} className={`${sc.color} shrink-0`} />
                        <h3 className={`text-[15px] font-black uppercase tracking-widest ${sc.color} truncate`}>
                          {finding.title}
                        </h3>
