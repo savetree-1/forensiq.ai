@@ -1,5 +1,5 @@
 import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import { ReportData } from "../models/ReportData";
 
 /**
@@ -82,7 +82,7 @@ export async function downloadForensicPdf(data: ReportData) {
       ["SHA-256 Hash", data.provenance.hashes.sha256]
     ];
 
-    (doc as any).autoTable({
+    autoTable(doc, {
       startY: 100,
       head: [],
       body: provenanceData,
@@ -104,7 +104,7 @@ export async function downloadForensicPdf(data: ReportData) {
       { content: `${a.detail}\nLocation: ${a.location}`, styles: { textColor: [60,60,60] } }
     ]);
 
-    (doc as any).autoTable({
+    autoTable(doc, {
       startY: currentY + 5,
       body: anomalyRows,
       margin: { left: margin },
