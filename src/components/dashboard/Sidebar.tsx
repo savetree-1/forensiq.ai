@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
 import {
   LayoutDashboard,
   Upload,
@@ -8,6 +9,7 @@ import {
   AlertTriangle,
   History,
   FileText,
+  LogOut,
 } from "lucide-react";
 const brandLogo = "/src/assets/branding/image copy 2.png";
 
@@ -25,6 +27,12 @@ const navItems = [
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="w-[280px] min-h-screen bg-[#080C24] flex flex-col py-6 border-r border-white/5 shrink-0 print:hidden">
@@ -61,17 +69,31 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom avatar */}
-      <div className="mt-auto pt-4 px-6">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-white text-xs font-semibold ring-2 ring-white/10 shrink-0">
-            JD
+      <div className="mt-auto pt-4 px-6 border-t border-white/5 mx-3 pt-6">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {user?.picture ? (
+              <img src={user.picture} alt="Avatar" className="w-9 h-9 rounded-full ring-2 ring-white/10" />
+            ) : (
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-white text-xs font-semibold ring-2 ring-white/10 shrink-0">
+                {user?.name?.charAt(0) || 'U'}
+              </div>
+            )}
+            <div className="flex flex-col text-left overflow-hidden">
+              <span className="text-sm text-gray-200 font-medium truncate w-[120px]">{user?.name || "Investigator"}</span>
+              <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Authorized</span>
+            </div>
           </div>
-          <div className="flex flex-col text-left">
-            <span className="text-sm text-gray-200 font-medium">John Doe</span>
-            <span className="text-xs text-gray-500">Investigator</span>
-          </div>
+          <button 
+            onClick={handleLogout}
+            className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+            title="Logout"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
       </div>
     </div>
   );
 }
+
