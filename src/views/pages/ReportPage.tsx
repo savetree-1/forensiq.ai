@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Printer, ShieldAlert, AlertTriangle, FileText, Cpu, Layout, FileSearch, Hash } from "lucide-react";
+import { Printer, ShieldAlert, AlertTriangle, FileText, Layout, Hash } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function ReportPage() {
@@ -87,8 +87,8 @@ export function ReportPage() {
 
              {/* 3. Document Provenance / File Specs */}
              <div className="px-14 py-10 border-b border-gray-100">
-                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-6 flex items-center gap-2">
-                   <FileSearch size={14} className="text-[#007AFF]"/> 2.0 Document Provenance
+                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-6">
+                   2.0 Document Provenance
                 </h3>
                 
                 <div className="grid grid-cols-2 gap-x-12 gap-y-4 text-[13px]">
@@ -127,8 +127,8 @@ export function ReportPage() {
 
              {/* 4. Extracted Diagnostic Anomalies */}
              <div className="px-14 py-10 border-b border-gray-100">
-                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-8 flex items-center gap-2">
-                   <AlertTriangle size={14} className="text-[#FA114F]" /> 3.0 Diagnostic Anomaly Index
+                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-8">
+                   3.0 Diagnostic Anomaly Index
                 </h3>
 
                 <div className="space-y-6">
@@ -161,8 +161,8 @@ export function ReportPage() {
 
              {/* 5. Sub-Engine Confidence Breakdowns */}
              <div className="px-14 py-10 border-b border-gray-100">
-                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-6 flex items-center gap-2">
-                   <Cpu size={14} className="text-[#AF52DE]" /> 4.0 Sub-Engine Vector Ratings
+                <h3 className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 mb-6">
+                   4.0 Sub-Engine Vector Ratings
                 </h3>
 
                 <div className="grid grid-cols-3 gap-6">
