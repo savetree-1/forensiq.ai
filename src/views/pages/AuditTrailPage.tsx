@@ -1,113 +1,159 @@
-import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import {
-  Upload, Bot, FileSearch, AlertTriangle, CheckCircle, History,
-  ChevronRight, Filter, Download, User, Circle
+import { motion } from "framer-motion";
+import { 
+  ChevronRight, Upload, Bot, 
+  AlertTriangle, CheckCircle, User, Download 
 } from "lucide-react";
 
-const events = [
-  { id: 1, icon: Upload, label: "Document uploaded", detail: "Account_statement_lending_citi.pdf (2.4 MB)", time: "09:14:03 AM", user: "John Doe", role: "Investigator", color: "text-blue-500", bg: "bg-blue-100", border: "border-blue-200" },
-  { id: 2, icon: Bot, label: "AI analysis initiated", detail: "ML Engine v4.2 queued for processing", time: "09:14:05 AM", user: "System", role: "Automated", color: "text-purple-500", bg: "bg-purple-100", border: "border-purple-200" },
-  { id: 3, icon: FileSearch, label: "Metadata extraction complete", detail: "18 metadata fields extracted, 2 anomalies flagged", time: "09:14:47 AM", user: "ML Engine v4.2", role: "System", color: "text-gray-500", bg: "bg-gray-100", border: "border-gray-200" },
-  { id: 4, icon: AlertTriangle, label: "Font mismatch detected", detail: "Signature block (Page 3, Block 7) — Arial over Helvetica Neue", time: "09:15:12 AM", user: "ML Engine v4.2", role: "System", color: "text-red-500", bg: "bg-red-100", border: "border-red-200" },
-  { id: 5, icon: AlertTriangle, label: "Timestamp anomaly flagged", detail: "Creation vs XMP modification date mismatch (10 years)", time: "09:15:18 AM", user: "ML Engine v4.2", role: "System", color: "text-orange-500", bg: "bg-orange-100", border: "border-orange-200" },
-  { id: 6, icon: AlertTriangle, label: "External wire entry detected", detail: "+$24,000.00 overlay insertion (Page 2, Block 12)", time: "09:15:31 AM", user: "ML Engine v4.2", role: "System", color: "text-red-500", bg: "bg-red-100", border: "border-red-200" },
-  { id: 7, icon: CheckCircle, label: "Risk score finalised", detail: "Composite risk score: 88/100 — HIGH RISK", time: "09:16:02 AM", user: "System", role: "Automated", color: "text-green-600", bg: "bg-green-100", border: "border-green-200" },
-  { id: 8, icon: User, label: "Case assigned", detail: "Assigned to John Doe for manual review", time: "09:16:10 AM", user: "Admin", role: "Administrator", color: "text-blue-400", bg: "bg-blue-50", border: "border-blue-100" },
-  { id: 9, icon: History, label: "Case notes added", detail: "\"Pending secondary verification from Citibank compliance team.\"", time: "09:18:44 AM", user: "John Doe", role: "Investigator", color: "text-indigo-500", bg: "bg-indigo-100", border: "border-indigo-200" },
+const auditEvents = [
+  {
+    id: 1,
+    time: "09:14 AM",
+    title: "Document Ingested",
+    detail: "Account_statement_lending_citi.pdf (2.4 MB)",
+    actor: "John Doe",
+    role: "Investigator",
+    type: "system",
+    theme: { border: "border-l-[#007AFF]", bg: "bg-[#007AFF]/10", text: "text-[#007AFF]", icon: Upload }
+  },
+  {
+    id: 2,
+    time: "09:14 AM",
+    title: "AI Analysis Initiated",
+    detail: "Neural Engine v4.2 primary scan sequence triggered.",
+    actor: "System",
+    role: "Automated",
+    type: "ai",
+    theme: { border: "border-l-[#AF52DE]", bg: "bg-[#AF52DE]/10", text: "text-[#AF52DE]", icon: Bot }
+  },
+  {
+    id: 3,
+    time: "09:15 AM",
+    title: "Metadata Anomaly Detected",
+    detail: "10-year timestamp discrepancy identified in XMP packet.",
+    actor: "Neural Engine",
+    role: "AI Core",
+    type: "alert",
+    theme: { border: "border-l-[#FF9500]", bg: "bg-[#FF9500]/10", text: "text-[#FF9500]", icon: AlertTriangle }
+  },
+  {
+    id: 4,
+    time: "09:15 AM",
+    title: "Critical Layout Mutation",
+    detail: "Font substitution detected on Page 3 (Arial vs Helvetica).",
+    actor: "Neural Engine",
+    role: "AI Core",
+    type: "alert",
+    theme: { border: "border-l-[#FA114F]", bg: "bg-[#FA114F]/10", text: "text-[#FA114F]", icon: AlertTriangle }
+  },
+  {
+    id: 5,
+    time: "09:16 AM",
+    title: "Risk Score Finalized",
+    detail: "Final Confidence: 12% | Risk Level: SEVERE.",
+    actor: "System",
+    role: "Automated",
+    type: "status",
+    theme: { border: "border-l-[#34C759]", bg: "bg-[#34C759]/10", text: "text-[#34C759]", icon: CheckCircle }
+  },
+  {
+    id: 6,
+    time: "09:18 AM",
+    title: "Case Assigned",
+    detail: "Manual forensic review assigned to Senior Auditor.",
+    actor: "Admin",
+    role: "Administrator",
+    type: "user",
+    theme: { border: "border-l-[#5856D6]", bg: "bg-[#5856D6]/10", text: "text-[#5856D6]", icon: User }
+  }
 ];
 
 export function AuditTrailPage() {
-  const [filter, setFilter] = useState<"all"|"system"|"user">("all");
-
-  const displayed = events.filter(e => {
-    if (filter === "system") return e.role === "System" || e.role === "Automated";
-    if (filter === "user") return e.role === "Investigator" || e.role === "Administrator";
-    return true;
-  });
-
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#0B0F2A] to-[#12163A] font-inter overflow-hidden">
+    <div className="flex h-screen bg-[#0b0f24] font-inter overflow-hidden text-white/90">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <div className="px-8 pt-6 pb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span className="text-white font-semibold">Audit Trail</span>
-            <ChevronRight size={14} className="text-gray-600" />
-            <span className="text-gray-400">Account_statement_lending_citi.pdf</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-1 text-xs">
-              {(["all","system","user"] as const).map(f => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  className={`px-3 py-1.5 rounded-md font-semibold capitalize transition-all ${filter === f ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"}`}
-                >
-                  {f}
-                </button>
-              ))}
+      <div className="flex-1 overflow-y-auto relative bg-[#0b0f24]">
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#007AFF]/5 rounded-full blur-[120px] pointer-events-none" />
+        
+        <div className="relative z-10 p-8 w-full max-w-[1200px] mx-auto pb-24">
+          
+          {/* Navigation */}
+          <div className="flex items-center justify-between h-8 mt-1 mb-10 shrink-0">
+            <div className="flex items-center gap-1.5 [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">
+              <span className="text-[13px] text-gray-500 font-medium hover:text-white cursor-pointer hover:bg-white/5 px-2 py-1 rounded-md transition-all">Overview</span>
+              <ChevronRight size={13} className="text-gray-700" />
+              <span className="text-[13px] text-white font-bold tracking-tight">Audit Trail Execution</span>
             </div>
-            <button className="flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-sm px-3 py-2 rounded-lg transition-all">
-              <Filter size={14} />
-            </button>
-            <button className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all active:scale-95 shadow-lg shadow-blue-500/20">
+            
+            <button className="flex items-center gap-2 px-4 py-2 bg-[#007AFF] hover:bg-[#007AFF]/80 text-white rounded-xl text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-[#007AFF]/20">
               <Download size={14} />
               Export Log
             </button>
           </div>
-        </div>
 
-        <div className="flex-1 px-8 pb-8 overflow-y-auto">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            {/* Summary row */}
-            <div className="flex items-center gap-6 px-6 py-4 border-b border-gray-100 bg-gray-50">
-              <div className="text-sm text-gray-600"><span className="font-bold text-gray-900">{events.length}</span> total events</div>
-              <div className="text-sm text-gray-600"><span className="font-bold text-red-500">3</span> anomaly flags</div>
-              <div className="text-sm text-gray-600"><span className="font-bold text-gray-900">2</span> actors</div>
-              <div className="text-sm text-gray-400 ml-auto">Session: Oct 24, 2023 · 09:14 AM → 09:18 AM</div>
-            </div>
+          {/* Calendar-Style Audit Block */}
+          <div className="w-full bg-[#121836]/40 border border-white/5 rounded-[24px] shadow-2xl overflow-hidden relative pb-10">
+            <div className="absolute top-0 left-[90px] right-0 bottom-0 pointer-events-none" style={{ backgroundImage: "linear-gradient(to bottom, transparent 99%, rgba(255,255,255,0.02) 100%)", backgroundSize: "100% 60px" }} />
 
-            {/* Timeline */}
-            <div className="relative px-8 py-6">
-              <div className="absolute left-[52px] top-6 bottom-6 w-px bg-gray-100" />
-              <div className="space-y-6">
-                {displayed.map((event, i) => {
-                  const Icon = event.icon;
-                  return (
-                    <div key={event.id} className="flex items-start gap-5 relative group">
-                      {/* Icon */}
-                      <div className={`w-9 h-9 rounded-full ${event.bg} border ${event.border} flex items-center justify-center shrink-0 z-10 shadow-sm`}>
-                        <Icon size={15} className={event.color} />
-                      </div>
+            <div className="relative pt-10">
+              <div className="absolute top-0 bottom-0 left-[85px] w-px bg-white/10 z-0" />
 
-                      {/* Content */}
-                      <div className="flex-1 bg-gray-50/60 group-hover:bg-gray-50 border border-gray-100 group-hover:border-gray-200 rounded-xl px-5 py-4 transition-all">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <p className="text-gray-900 font-semibold text-sm">{event.label}</p>
-                            <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">{event.detail}</p>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="text-gray-400 text-xs font-mono">{event.time}</p>
-                            <div className="flex items-center gap-1 justify-end mt-1">
-                              <Circle size={6} className="text-gray-300 fill-gray-300" />
-                              <p className="text-gray-500 text-xs">{event.user}</p>
-                              <span className="text-gray-300">·</span>
-                              <p className="text-gray-400 text-xs">{event.role}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {auditEvents.map((event, index) => (
+                <AuditBlock key={event.id} event={event} index={index} />
+              ))}
             </div>
           </div>
+
         </div>
       </div>
     </div>
+  );
+}
+
+function AuditBlock({ event, index }: { event: any, index: number }) {
+  const Icon = event.theme.icon;
+  return (
+    <motion.div 
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.08, duration: 0.4 }}
+      className="flex w-full mb-[2px] relative z-10 group"
+    >
+      <div className="w-[85px] shrink-0 text-right pr-3 py-3 relative">
+          <span className="text-[11px] font-bold text-[#8E8E93] [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]">{event.time}</span>
+          <div className="absolute top-[20px] left-full w-[2000px] h-px bg-white/5 pointer-events-none" />
+      </div>
+
+      <div className="flex-1 pl-[2px] pr-8 py-1.5 min-w-0">
+          <div className={`
+             px-8 py-5 rounded-r-xl rounded-l-sm border-l-[4px] 
+             ${event.theme.border} ${event.theme.bg} hover:bg-white/[0.04]
+             transition-all duration-200 backdrop-blur-md relative overflow-hidden
+             [font-family:'SF_Pro_Rounded',-apple-system,system-ui,sans-serif]
+          `}>
+             <div className="flex items-center justify-between relative z-10">
+                <div className="flex items-center gap-4 flex-1 min-w-0 pr-4">
+                   <Icon size={18} className={`${event.theme.text} shrink-0`} strokeWidth={2.5} />
+                   <div className="min-w-0">
+                      <h3 className={`text-[15px] font-black uppercase tracking-widest ${event.theme.text} truncate`}>
+                        {event.title}
+                      </h3>
+                      <p className="text-[13px] font-medium text-gray-400 truncate max-w-xl">
+                        {event.detail}
+                      </p>
+                   </div>
+                </div>
+                
+                <div className="text-right shrink-0 ml-8 bg-black/20 px-4 py-2 rounded-xl border border-white/5 font-bold">
+                   <div className="flex items-center gap-2 justify-end">
+                      <span className="text-[11px] text-white/90">{event.actor}</span>
+                      <span className="text-[10px] text-gray-500 uppercase tracking-widest">{event.role}</span>
+                   </div>
+                </div>
+             </div>
+          </div>
+      </div>
+    </motion.div>
   );
 }
